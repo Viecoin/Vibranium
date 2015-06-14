@@ -18,6 +18,10 @@ struct SeedSpec6 {
     uint16_t port;
 };
 
+unsigned int pnSeed[] =
+{
+};
+
 #include "chainparamsseeds.h"
 
 //
@@ -85,7 +89,10 @@ public:
         assert(hashGenesisBlock == uint256("0x00008f8420c84801ef422b2e2042ee4b1a41e325a5a98a7bd6a1be89ea9769d0"));
         assert(genesis.hashMerkleRoot == uint256("0xc006562dbaaf0a452861bd8d000c5492cdcee3b2f8b58b8833a13e7d121ba461"));
 
-        
+
+		vSeeds.push_back(CDNSSeedData("162.243.217.237", "162.243.217.237"));
+		vSeeds.push_back(CDNSSeedData("104.131.203.167", "104.131.203.167"));
+		
         base58Prefixes[PUBKEY_ADDRESS] = list_of(63);
         base58Prefixes[SCRIPT_ADDRESS] = list_of(85);
         base58Prefixes[SECRET_KEY] =     list_of(153);
@@ -95,6 +102,20 @@ public:
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
         nLastPOWBlock = 10000;
+		for (unsigned int i = 0; i < ARRAYLEN(pnSeed); i++)
+        {
+            // It'll only connect to one or two seed nodes because once it connects,
+            // it'll get a pile of addresses with newer timestamps.
+            // Seed nodes are given a random 'last seen time' of between one and two
+            // weeks ago.
+            const int64_t nOneWeek = 7*24*60*60;
+            struct in_addr ip;
+            memcpy(&ip, &pnSeed[i], sizeof(ip));
+            CAddress addr(CService(ip, GetDefaultPort()));
+            addr.nTime = GetTime() - GetRand(nOneWeek) - nOneWeek;
+            vFixedSeeds.push_back(addr);
+        }
+		
     }
 
     virtual const CBlock& GenesisBlock() const { return genesis; }
