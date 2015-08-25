@@ -31,7 +31,6 @@
 #include "rpcconsole.h"
 #include "wallet.h"
 #include "init.h"
-#include "ui_interface.h"
 #include "masternodemanager.h"
 #include "messagemodel.h"
 #include "messagepage.h"
